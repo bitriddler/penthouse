@@ -36,11 +36,11 @@ let _browserLaunchPromise = null
 // until all pages used by penthouse are closed (i.e. individual calls are done)
 let _browserPagesOpen = 0
 const launchBrowserIfNeeded = async function (options, debuglog) {
-  if (options.puppeteer && typeof options.puppeteer.getBrowser === 'function') {
-    browser = await options.puppeteer.getBrowser()
-  }
   if (browser) {
     return
+  }
+  if (options.puppeteer && typeof options.puppeteer.getBrowser === 'function') {
+    _browserLaunchPromise = Promise.resolve(options.puppeteer.getBrowser())
   }
   if (!_browserLaunchPromise) {
     debuglog('no browser instance, launching new browser..')
